@@ -7,9 +7,9 @@ import { motion, useInView } from "framer-motion";
 const PARAGRAPHS = [
   "I've known you for so long that it's hard to fit everything into one page.",
   "But I hope this reminds you how many moments, phases, and memories have made you such an important part of my life.",
-  "You've shown up in so many different forms — the silly version, the serious version, the version that was figuring everything out right alongside me.",
+  "You've shown up in so many different forms — the silly version, the serious version, the version that was figuring everything out with me.",
 ];
-const CLOSING = "I'm glad I got to grow up with you.";
+const CLOSING = "I'm grateful to have you in my life.";
 const FINAL = "Happy Birthday, bestie.";
 // ─────────────────────────────────────────────────────────────────────────────
 
