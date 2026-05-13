@@ -33,6 +33,7 @@ export default function CastleIntro({ onEnter }: CastleIntroProps) {
         playsInline
         loop
         preload="auto"
+        onCanPlay={(e) => e.currentTarget.play().catch(() => {})}
       />
 
       {/* Cinematic gradient overlay */}

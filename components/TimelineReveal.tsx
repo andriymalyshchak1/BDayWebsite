@@ -82,6 +82,7 @@ export default function TimelineReveal({ onDone }: { onDone: () => void }) {
                 playsInline
                 loop
                 preload="auto"
+                onCanPlay={(e) => e.currentTarget.play().catch(() => {})}
               />
             )}
             {/* Bottom gradient + label */}
