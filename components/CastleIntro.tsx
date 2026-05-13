@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import MusicToggle from "./MusicToggle";
 
@@ -10,6 +10,10 @@ interface CastleIntroProps {
 
 export default function CastleIntro({ onEnter }: CastleIntroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    videoRef.current?.play().catch(() => {});
+  }, []);
 
   return (
     <motion.div
@@ -22,16 +26,14 @@ export default function CastleIntro({ onEnter }: CastleIntroProps) {
       {/* Background video — replace src with your converted .mp4 */}
       <video
         ref={videoRef}
+        src="/assets/castle-intro-compressed.mp4"
         className="absolute inset-0 w-full h-full object-cover"
         autoPlay
         muted
         playsInline
         loop
         preload="auto"
-      >
-        {/* .mov works natively in Safari; Chrome/Firefox will use mp4 if available */}
-        <source src="/assets/castle-intro-compressed.mp4" type="video/mp4" />
-      </video>
+      />
 
       {/* Cinematic gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/70" />
