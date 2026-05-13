@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useRef as useCanvasRef } from "react";
+import { useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 
 interface EndingProps {
