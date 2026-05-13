@@ -2,7 +2,6 @@
 
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import MusicToggle from "./MusicToggle";
 
 interface CastleIntroProps {
   onEnter: () => void;
@@ -12,7 +11,10 @@ export default function CastleIntro({ onEnter }: CastleIntroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    videoRef.current?.play().catch(() => {});
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true; // set as JS property — more reliable than the HTML attribute alone
+    video.play().catch(() => {});
   }, []);
 
   return (
@@ -23,7 +25,6 @@ export default function CastleIntro({ onEnter }: CastleIntroProps) {
       exit={{ opacity: 0 }}
       transition={{ duration: 1.5, ease: "easeInOut" }}
     >
-      {/* Background video — replace src with your converted .mp4 */}
       <video
         ref={videoRef}
         src="/assets/castle-intro-compressed.mp4"
@@ -32,8 +33,7 @@ export default function CastleIntro({ onEnter }: CastleIntroProps) {
         muted
         playsInline
         loop
-        preload="auto"
-        onCanPlay={(e) => e.currentTarget.play().catch(() => {})}
+        onCanPlay={(e) => { e.currentTarget.muted = true; e.currentTarget.play().catch(() => {}); }}
       />
 
       {/* Cinematic gradient overlay */}
@@ -70,9 +70,6 @@ export default function CastleIntro({ onEnter }: CastleIntroProps) {
           Enter
         </motion.button>
       </div>
-
-      {/* Music toggle — plays /assets/magical-music.mp3 */}
-      <MusicToggle src="/assets/magical-music.mp3" />
     </motion.div>
   );
 }
