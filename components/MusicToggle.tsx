@@ -39,12 +39,22 @@ export default function MusicToggle({
     const audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.45;
-    if (startTime > 0) audio.currentTime = startTime;
     audioRef.current = audio;
+
+    // iOS ignores currentTime seeks before readyState >= HAVE_METADATA.
+    // Apply the seek once metadata is available, and re-apply before every play()
+    // so it survives a reset (e.g. when autoplay is blocked and user unlocks later).
+    const applyStartTime = () => { if (startTime > 0) audio.currentTime = startTime; };
+    if (audio.readyState >= 1) {
+      applyStartTime();
+    } else {
+      audio.addEventListener("loadedmetadata", applyStartTime, { once: true });
+    }
 
     // Try immediate autoplay; if blocked, start on first user gesture
     audio.play().then(() => setStarted(true)).catch(() => {
       const unlock = () => {
+        applyStartTime(); // re-apply in case iOS reset currentTime
         audio.play().then(() => setStarted(true)).catch(() => {});
       };
       document.addEventListener("click", unlock, { once: true });
