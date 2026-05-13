@@ -470,7 +470,7 @@ export default function GateScreen({ onEnter }: { onEnter: () => void }) {
 
       {/* Portrait */}
       <motion.div
-        className="relative w-[320px] h-[427px] md:w-[945px] md:h-[1215px] mt-8 translate-x-6"
+        className="relative w-[360px] h-[480px] md:w-[945px] md:h-[1215px] mt-8 translate-x-6"
         style={{ zIndex: 16 }}
         initial={{ opacity: 0, scale: 0.88, filter: "blur(12px)" }}
         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
