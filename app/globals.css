@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@200;300;400;500&display=swap');
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #080808;
+  color: #F5F0E8;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.font-serif { font-family: 'Playfair Display', Georgia, serif; }
+
+/* ── Film grain ─────────────────────────────────────────────────── */
+@keyframes grain {
+  0%,100% { transform: translate(0,0) }
+  10%     { transform: translate(-4%,-6%) }
+  20%     { transform: translate(-10%, 4%) }
+  30%     { transform: translate( 6%,-18%) }
+  40%     { transform: translate(-4%, 20%) }
+  50%     { transform: translate(-12%, 8%) }
+  60%     { transform: translate(12%, 0%) }
+  70%     { transform: translate( 0%, 12%) }
+  80%     { transform: translate( 2%, 28%) }
+  90%     { transform: translate(-8%, 8%) }
+}
+.grain-overlay {
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  animation: grain 0.4s steps(1) infinite;
+}
+
+/* ── Ambient glow pulse (GateScreen) ────────────────────────────── */
+@keyframes breathe {
+  0%, 100% { opacity: 0.12; transform: scale(1); }
+  50%       { opacity: 0.22; transform: scale(1.08); }
+}
+.glow-breathe { animation: breathe 4s ease-in-out infinite; }
+
+/* ── Light rays rotation (GateScreen) ──────────────────────────── */
+@keyframes rayRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.25); border-radius: 2px; }
