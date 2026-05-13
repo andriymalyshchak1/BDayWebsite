@@ -107,7 +107,7 @@ export default function MusicToggle({
             transition={{ duration: 0.5 }}
           >
             <motion.p
-              className="text-white/50 text-2xl tracking-widest uppercase whitespace-nowrap"
+              className="text-white/50 text-base tracking-widest uppercase whitespace-nowrap"
               animate={{ x: ["0%", "-50%"] }}
               transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             >
@@ -124,15 +124,13 @@ export default function MusicToggle({
         className="text-white/50 hover:text-white/80 transition-colors duration-300"
       >
         {muted || !started ? (
-          // Speaker off
-          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          // Speaker only — no X
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-            <line x1="23" y1="9" x2="17" y2="15" />
-            <line x1="17" y1="9" x2="23" y2="15" />
           </svg>
         ) : (
           // Speaker on with wave
-          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
             <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
             <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />

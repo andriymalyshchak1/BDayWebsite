@@ -398,7 +398,7 @@ export default function GateScreen({ onEnter }: { onEnter: () => void }) {
 
       {/* Question + buttons */}
       <motion.div
-        className="relative text-center"
+        className="relative text-center mt-16"
         style={{ zIndex: 22 }}
         animate={{ opacity: activating ? 0 : 1 }}
         transition={{ duration: 0.5 }}
@@ -470,7 +470,7 @@ export default function GateScreen({ onEnter }: { onEnter: () => void }) {
 
       {/* Portrait */}
       <motion.div
-        className="relative w-[320px] h-[427px] md:w-[945px] md:h-[1215px] mt-4"
+        className="relative w-[320px] h-[427px] md:w-[945px] md:h-[1215px] mt-8"
         style={{ zIndex: 16 }}
         initial={{ opacity: 0, scale: 0.88, filter: "blur(12px)" }}
         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
