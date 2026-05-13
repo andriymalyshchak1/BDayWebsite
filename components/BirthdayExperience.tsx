@@ -78,6 +78,16 @@ export default function BirthdayExperience() {
     }
   }, [stage]);
 
+  // Preload castle video into HTTP cache as soon as fade screens begin (~17s runway)
+  useEffect(() => {
+    if (stage !== "fade") return;
+    const ctrl = new AbortController();
+    fetch("/assets/castle-intro-compressed.mp4", { signal: ctrl.signal })
+      .then(r => r.blob())
+      .catch(() => {});
+    return () => ctrl.abort();
+  }, [stage]);
+
   const transitionTo = useCallback((next: Stage, type: TransitionType) => {
     nextStageRef.current = next;
     setTxType(type);
