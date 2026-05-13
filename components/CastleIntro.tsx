@@ -50,15 +50,6 @@ export default function CastleIntro({ onEnter }: CastleIntroProps) {
           Ify&apos;s Birthday ;)
         </motion.p>
 
-        <motion.p
-          className="mt-4 text-white/60 text-sm md:text-base tracking-[0.12em] font-light italic"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 1 }}
-        >
-          Happy 21st ur THE goat 🐐
-        </motion.p>
-
         <motion.button
           onClick={onEnter}
           className="mt-12 px-6 md:px-10 py-3 border border-white/30 text-white/80 hover:text-white hover:border-white/60 text-sm tracking-[0.25em] uppercase transition-all duration-500 backdrop-blur-sm"
