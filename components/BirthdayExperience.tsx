@@ -4,6 +4,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import GateScreen from "./GateScreen";
 import FadeScreen from "./FadeScreen";
+import LoadingGate from "./LoadingGate";
 import CastleIntro from "./CastleIntro";
 import Timeline from "./Timeline";
 import BirthdayLetter from "./BirthdayLetter";
@@ -14,7 +15,7 @@ import CinematicTransition, { TransitionType } from "./CinematicTransition";
 import TimelineTitleCard from "./TimelineTitleCard";
 import TimelineReveal from "./TimelineReveal";
 
-type Stage = "gate" | "fade" | "fade2" | "fade3" | "castle" | "main";
+type Stage = "loading" | "gate" | "fade" | "fade2" | "fade3" | "castle" | "main";
 
 // ── Main stage: title card → mosaic reveal → scrollable timeline ─────────────
 function MainStage({ onReplay, hozierAudio }: { onReplay: () => void; hozierAudio: HTMLAudioElement | null }) {
@@ -53,7 +54,7 @@ function MainStage({ onReplay, hozierAudio }: { onReplay: () => void; hozierAudi
 
 // ── Root experience ───────────────────────────────────────────────────────────
 export default function BirthdayExperience() {
-  const [stage, setStage]               = useState<Stage>("gate");
+  const [stage, setStage]               = useState<Stage>("loading");
   const [transitioning, setTransitioning] = useState(false);
   const [txType, setTxType]             = useState<TransitionType>("letterbox");
   const nextStageRef                    = useRef<Stage>("fade");
@@ -108,7 +109,21 @@ export default function BirthdayExperience() {
         <MusicToggle src="/assets/gambino.mp3" label="Childish Gambino" startTime={16} fadeOutMs={1800} />
       )}
 
+      {/* Silently buffer the castle video while the user reads the joke slides */}
+      {(stage === "fade" || stage === "fade2" || stage === "fade3") && (
+        <video
+          src="/assets/castle-intro-compressed.mp4"
+          preload="auto"
+          muted
+          playsInline
+          style={{ display: "none" }}
+        />
+      )}
+
       <AnimatePresence mode="wait">
+        {stage === "loading" && (
+          <LoadingGate key="loading" onReady={() => setStage("gate")} />
+        )}
         {stage === "gate" && (
           <GateScreen key="gate" onEnter={handleGateEnter} />
         )}
