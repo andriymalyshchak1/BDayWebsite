@@ -8,7 +8,7 @@ import VideoSwipe from "./VideoSwipe";
 //     Graduation, Alabama, Baking ─────────────────────────────────────────────
 const CHAPTERS = [
   {
-    label:  "DroneWork",
+    label:  "Drones",
     title:  "MVP at work",
     cover1: "/media/droneWork/cover1.mp4",
     cover2: "/media/droneWork/cover2.mp4",
@@ -26,7 +26,7 @@ const CHAPTERS = [
     cover2: "/media/deca/cover2.mp4",
   },
   {
-    label:  "NailArt",
+    label:  "IfyArt",
     title:  "Amazing very very impressive idk how you do it",
     cover1: "/media/nailArt/cover1.mp4",
     cover2: "/media/nailArt/cover2.mp4",
@@ -44,7 +44,7 @@ const CHAPTERS = [
     cover2: "/media/alabama/cover2.mp4",
   },
   {
-    label:  "Planes",
+    label:  "Plane",
     title:  "We didn't crash lol still surprises me sometimes",
     cover1: "/media/planes/cover1.mp4",
     cover2: "/media/planes/cover2.mp4",

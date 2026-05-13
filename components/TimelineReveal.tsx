@@ -21,6 +21,8 @@ const REVEAL_ORDER = [4, 0, 8, 2, 6, 1, 7, 3, 5];
 const STAGGER_MS   = 3500;
 const HOLD_MS      = 2500;
 const FADE_MS      = 1100;
+// Show "tap to continue" 3 s before the sequence auto-advances
+const HINT_DELAY_S = (REVEAL_ORDER.length * STAGGER_MS + 300 + HOLD_MS - 3000) / 1000;
 
 export default function TimelineReveal({ onDone }: { onDone: () => void }) {
   const [visible, setVisible] = useState<Set<number>>(new Set());
@@ -108,7 +110,7 @@ export default function TimelineReveal({ onDone }: { onDone: () => void }) {
         className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white/25 text-[9px] tracking-[0.5em] uppercase pointer-events-none"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.5, duration: 0.8 }}
+        transition={{ delay: HINT_DELAY_S, duration: 0.8 }}
       >
         tap to continue
       </motion.p>
