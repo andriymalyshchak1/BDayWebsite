@@ -30,8 +30,7 @@ export default function CastleIntro({ onEnter }: CastleIntroProps) {
         poster="/assets/castle-poster.jpg" /* optional: add a poster frame */
       >
         {/* .mov works natively in Safari; Chrome/Firefox will use mp4 if available */}
-        <source src="/assets/castle-intro.mov" type="video/quicktime" />
-        <source src="/assets/castle-intro.mp4" type="video/mp4" />
+        <source src="/assets/castle-intro-compressed.mp4" type="video/mp4" />
       </video>
 
       {/* Cinematic gradient overlay */}
