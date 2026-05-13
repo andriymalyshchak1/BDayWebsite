@@ -118,17 +118,6 @@ export default function BirthdayExperience() {
         <MusicToggle src="/assets/gambino.mp3" label="Childish Gambino" startTime={16} fadeOutMs={1800} />
       )}
 
-      {/* Silently buffer the castle video while the user reads the joke slides */}
-      {(stage === "fade" || stage === "fade2" || stage === "fade3") && (
-        <video
-          src="/assets/castle-intro-compressed.mp4"
-          preload="auto"
-          muted
-          playsInline
-          style={{ display: "none" }}
-        />
-      )}
-
       <AnimatePresence mode="wait">
         {stage === "loading" && (
           <LoadingGate key="loading" onReady={() => setStage("gate")} />
