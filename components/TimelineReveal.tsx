@@ -69,14 +69,19 @@ export default function TimelineReveal({ onDone }: { onDone: () => void }) {
               : { opacity: 0, scale: 0.94 }}
             transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           >
-            <video
-              className="w-full h-full object-contain"
-              src={tile.src}
-              autoPlay
-              muted
-              playsInline
-              loop
-            />
+            {/* Only mount the video element when the tile reveals — avoids
+                loading all 9 videos simultaneously and saturating bandwidth */}
+            {visible.has(i) && (
+              <video
+                className="absolute inset-0 w-full h-full object-contain"
+                src={tile.src}
+                autoPlay
+                muted
+                playsInline
+                loop
+                preload="auto"
+              />
+            )}
             {/* Bottom gradient + label */}
             <div
               className="absolute inset-x-0 bottom-0 h-16 pointer-events-none"

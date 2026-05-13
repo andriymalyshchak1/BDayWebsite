@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import GateScreen from "./GateScreen";
 import FadeScreen from "./FadeScreen";
@@ -17,7 +17,7 @@ import TimelineReveal from "./TimelineReveal";
 type Stage = "gate" | "fade" | "fade2" | "fade3" | "castle" | "main";
 
 // ── Main stage: title card → mosaic reveal → scrollable timeline ─────────────
-function MainStage({ onReplay }: { onReplay: () => void }) {
+function MainStage({ onReplay, hozierAudio }: { onReplay: () => void; hozierAudio: HTMLAudioElement | null }) {
   const [titleDone,  setTitleDone]  = useState(false);
   const [revealDone, setRevealDone] = useState(false);
 
@@ -32,7 +32,7 @@ function MainStage({ onReplay }: { onReplay: () => void }) {
       <Timeline />
       <BirthdayLetter />
       <Ending onReplay={onReplay} />
-      <MusicToggle src="/assets/hozier.mp3" label="Hozier — Too Sweet" />
+      <MusicToggle src="/assets/hozier.mp3" label="Hozier — Too Sweet" externalAudio={hozierAudio} />
 
       {/* 1. Title card */}
       <AnimatePresence>
@@ -57,6 +57,25 @@ export default function BirthdayExperience() {
   const [transitioning, setTransitioning] = useState(false);
   const [txType, setTxType]             = useState<TransitionType>("letterbox");
   const nextStageRef                    = useRef<Stage>("fade");
+  const hozierAudioRef                  = useRef<HTMLAudioElement | null>(null);
+
+  // Pre-create Hozier audio so it buffers early and can be started inside a
+  // click handler (required by iOS Safari's autoplay policy).
+  useEffect(() => {
+    const audio = new Audio("/assets/hozier.mp3");
+    audio.loop = true;
+    audio.volume = 0.45;
+    hozierAudioRef.current = audio;
+    return () => { audio.pause(); audio.src = ""; };
+  }, []);
+
+  // Pause Hozier whenever we leave the main stage (e.g. replay resets to gate)
+  useEffect(() => {
+    if (stage !== "main") {
+      const a = hozierAudioRef.current;
+      if (a && !a.paused) { a.pause(); a.currentTime = 0; }
+    }
+  }, [stage]);
 
   const transitionTo = useCallback((next: Stage, type: TransitionType) => {
     nextStageRef.current = next;
@@ -70,7 +89,12 @@ export default function BirthdayExperience() {
   const handleFadeComplete  = useCallback(() => transitionTo("fade2",  "bloom"),   [transitionTo]);
   const handleFade2Complete = useCallback(() => transitionTo("fade3",  "bloom"),   [transitionTo]);
   const handleFade3Complete = useCallback(() => transitionTo("castle", "iris"),    [transitionTo]);
-  const handleCastleEnter  = useCallback(() => transitionTo("main",   "burn"),     [transitionTo]);
+  const handleCastleEnter  = useCallback(() => {
+    // Play Hozier immediately inside this click handler — iOS requires audio
+    // to start within a direct user gesture, not a deferred useEffect.
+    hozierAudioRef.current?.play().catch(() => {});
+    transitionTo("main", "burn");
+  }, [transitionTo]);
   const handleReplay       = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setTimeout(() => transitionTo("gate", "letterbox"), 600);
@@ -119,7 +143,7 @@ export default function BirthdayExperience() {
           <CastleIntro key="castle" onEnter={handleCastleEnter} />
         )}
         {stage === "main" && (
-          <MainStage key="main" onReplay={handleReplay} />
+          <MainStage key="main" onReplay={handleReplay} hozierAudio={hozierAudioRef.current} />
         )}
       </AnimatePresence>
     </>

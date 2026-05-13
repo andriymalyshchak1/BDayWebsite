@@ -8,6 +8,9 @@ interface MusicToggleProps {
   label?: string;
   startTime?: number;
   fadeOutMs?: number;
+  /** Pre-created audio element — used when audio must start inside a click
+   *  handler (iOS gesture requirement). MusicToggle controls UI only. */
+  externalAudio?: HTMLAudioElement | null;
 }
 
 export default function MusicToggle({
@@ -15,12 +18,24 @@ export default function MusicToggle({
   label = "Hozier — Too Sweet",
   startTime = 0,
   fadeOutMs = 0,
+  externalAudio,
 }: MusicToggleProps) {
   const [muted, setMuted] = useState(false);
   const [started, setStarted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
+    // ── External audio path (Hozier) ─────────────────────────────────────
+    if (externalAudio) {
+      audioRef.current = externalAudio;
+      if (!externalAudio.paused) setStarted(true);
+      const onPlay = () => setStarted(true);
+      externalAudio.addEventListener("play", onPlay);
+      // Lifecycle managed by the parent — don't pause/destroy here
+      return () => externalAudio.removeEventListener("play", onPlay);
+    }
+
+    // ── Self-managed audio path (Gambino) ────────────────────────────────
     const audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.45;
@@ -59,7 +74,7 @@ export default function MusicToggle({
         audio.src = "";
       }
     };
-  }, [src, fadeOutMs]);
+  }, [src, fadeOutMs, externalAudio]);
 
   const toggle = () => {
     if (!audioRef.current) return;
