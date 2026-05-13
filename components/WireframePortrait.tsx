@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import Image from "next/image";
 
 // ─── Shaders ──────────────────────────────────────────────────────────────────
 const vert = /* glsl */`
@@ -127,13 +128,25 @@ export default function WireframePortrait({
   src: string;
   className?: string;
 }) {
+  const [ready, setReady] = useState(false);
+
   return (
-    <div className={className} aria-hidden>
+    <div className={`relative ${className}`} aria-hidden>
+      {/* Static portrait shows immediately while Three.js initialises */}
+      <Image
+        src={src}
+        alt=""
+        fill
+        priority
+        className="object-contain"
+        style={{ opacity: ready ? 0 : 0.35, transition: "opacity 0.8s" }}
+      />
       <Canvas
         frameloop="always"
         camera={{ position: [0, 0, 11.25], fov: 45 }}
         gl={{ antialias: true, alpha: true }}
-        style={{ background: "transparent" }}
+        style={{ background: "transparent", position: "absolute", inset: 0 }}
+        onCreated={() => setReady(true)}
       >
         <Portrait src={src} />
       </Canvas>

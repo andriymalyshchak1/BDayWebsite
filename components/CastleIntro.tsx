@@ -27,7 +27,7 @@ export default function CastleIntro({ onEnter }: CastleIntroProps) {
         muted
         playsInline
         loop
-        poster="/assets/castle-poster.jpg" /* optional: add a poster frame */
+        preload="auto"
       >
         {/* .mov works natively in Safari; Chrome/Firefox will use mp4 if available */}
         <source src="/assets/castle-intro-compressed.mp4" type="video/mp4" />
