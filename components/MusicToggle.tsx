@@ -100,14 +100,14 @@ export default function MusicToggle({
       <AnimatePresence>
         {started && !muted && (
           <motion.div
-            className="overflow-hidden w-[60vw] md:w-[28rem]"
+            className="overflow-hidden h-4 flex items-center w-[45vw] md:w-[20rem]"
             initial={{ opacity: 0, width: 0 }}
-            animate={{ opacity: 1, width: "min(448px, 60vw)" }}
+            animate={{ opacity: 1, width: "min(320px, 45vw)" }}
             exit={{ opacity: 0, width: 0 }}
             transition={{ duration: 0.5 }}
           >
             <motion.p
-              className="text-white/50 text-base tracking-widest uppercase whitespace-nowrap"
+              className="text-white/50 text-[10px] tracking-widest uppercase whitespace-nowrap leading-none"
               animate={{ x: ["0%", "-50%"] }}
               transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             >

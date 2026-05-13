@@ -91,9 +91,18 @@ export default function BirthdayExperience() {
   const handleFade2Complete = useCallback(() => transitionTo("fade3",  "bloom"),   [transitionTo]);
   const handleFade3Complete = useCallback(() => transitionTo("castle", "iris"),    [transitionTo]);
   const handleCastleEnter  = useCallback(() => {
-    // Play Hozier immediately inside this click handler — iOS requires audio
-    // to start within a direct user gesture, not a deferred useEffect.
-    hozierAudioRef.current?.play().catch(() => {});
+    const audio = hozierAudioRef.current;
+    if (audio) {
+      // iOS requires the first .play() to happen inside a gesture handler.
+      // We unlock the element here, pause immediately, then resume after
+      // Gambino's 1800 ms fade + ~700 ms transition midpoint + 1 s gap ≈ 3.5 s.
+      audio.volume = 0;
+      audio.play().then(() => { audio.pause(); audio.currentTime = 0; }).catch(() => {});
+      setTimeout(() => {
+        audio.volume = 0.45;
+        audio.play().catch(() => {});
+      }, 3500);
+    }
     transitionTo("main", "burn");
   }, [transitionTo]);
   const handleReplay       = useCallback(() => {
