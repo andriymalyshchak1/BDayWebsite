@@ -13,8 +13,18 @@ export default function CastleIntro({ onEnter }: CastleIntroProps) {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    video.muted = true; // set as JS property — more reliable than the HTML attribute alone
+    video.muted = true;
     video.play().catch(() => {});
+
+    // Recover from stalls — Safari sometimes pauses a muted autoplay video
+    // when it stalls mid-buffer; retrying play() here gets it going again.
+    const onStall = () => { video.muted = true; video.play().catch(() => {}); };
+    video.addEventListener("stalled",  onStall);
+    video.addEventListener("waiting",  onStall);
+    return () => {
+      video.removeEventListener("stalled", onStall);
+      video.removeEventListener("waiting", onStall);
+    };
   }, []);
 
   return (
@@ -33,6 +43,7 @@ export default function CastleIntro({ onEnter }: CastleIntroProps) {
         muted
         playsInline
         loop
+        disablePictureInPicture
         onCanPlay={(e) => { e.currentTarget.muted = true; e.currentTarget.play().catch(() => {}); }}
       />
 

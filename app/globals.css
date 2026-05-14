@@ -55,3 +55,10 @@ body {
 ::-webkit-scrollbar       { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.25); border-radius: 2px; }
+
+/* ── Suppress iOS Safari native video overlay / play button ─────── */
+video::-webkit-media-controls                  { display: none !important; }
+video::-webkit-media-controls-overlay-play-button { display: none !important; opacity: 0 !important; }
+video::-webkit-media-controls-start-playback-button { display: none !important; opacity: 0 !important; }
+video::-webkit-media-controls-panel           { display: none !important; }
+video::-webkit-media-controls-play-button     { display: none !important; }

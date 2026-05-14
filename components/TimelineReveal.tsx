@@ -82,7 +82,10 @@ export default function TimelineReveal({ onDone }: { onDone: () => void }) {
                 playsInline
                 loop
                 preload="auto"
+                disablePictureInPicture
                 onCanPlay={(e) => { e.currentTarget.muted = true; e.currentTarget.play().catch(() => {}); }}
+                onStalled={(e) => { e.currentTarget.muted = true; e.currentTarget.play().catch(() => {}); }}
+                onWaiting={(e) => { e.currentTarget.muted = true; e.currentTarget.play().catch(() => {}); }}
               />
             )}
             {/* Bottom gradient + label */}
