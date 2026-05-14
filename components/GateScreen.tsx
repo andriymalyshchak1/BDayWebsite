@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
+import EasterEggModal from "./EasterEggModal";
 
 const WireframePortrait = dynamic(() => import("./WireframePortrait"), { ssr: false });
 
@@ -333,6 +334,7 @@ function LetterByLetter({
 export default function GateScreen({ onEnter }: { onEnter: () => void }) {
   const [declined,   setDeclined]   = useState(false);
   const [activating, setActivating] = useState(false);
+  const [eggOpen,    setEggOpen]    = useState(false);
 
   const handleYes = () => {
     setActivating(true);
@@ -468,13 +470,14 @@ export default function GateScreen({ onEnter }: { onEnter: () => void }) {
         </AnimatePresence>
       </motion.div>
 
-      {/* Portrait */}
+      {/* Portrait — click to open easter egg */}
       <motion.div
-        className="relative w-[360px] h-[480px] md:w-[945px] md:h-[1215px] mt-8 translate-x-6"
+        className="relative w-[360px] h-[480px] md:w-[945px] md:h-[1215px] mt-8 translate-x-6 cursor-pointer"
         style={{ zIndex: 16 }}
         initial={{ opacity: 0, scale: 0.88, filter: "blur(12px)" }}
         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         transition={{ delay: 0.2, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+        onClick={() => setEggOpen(true)}
       >
         <WireframePortrait src={PORTRAIT_SRC} className="w-full h-full" />
         <div
@@ -486,6 +489,11 @@ export default function GateScreen({ onEnter }: { onEnter: () => void }) {
           }}
         />
       </motion.div>
+
+      {/* Easter egg modal */}
+      <AnimatePresence>
+        {eggOpen && <EasterEggModal key="egg" onClose={() => setEggOpen(false)} />}
+      </AnimatePresence>
 
       {/* ── Activation build-up overlays ── */}
       {/* 1. Gold aura surge — intensifies the existing glow */}

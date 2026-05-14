@@ -61,7 +61,15 @@ export default function MusicToggle({
       document.addEventListener("touchstart", unlock, { once: true });
     });
 
+    // Pause while easter egg is open; resume when it closes
+    const onEggOpen  = () => { if (!audio.paused) audio.pause(); };
+    const onEggClose = () => { if (audio.paused && !audio.ended) audio.play().catch(() => {}); };
+    window.addEventListener("egg:open",  onEggOpen);
+    window.addEventListener("egg:close", onEggClose);
+
     return () => {
+      window.removeEventListener("egg:open",  onEggOpen);
+      window.removeEventListener("egg:close", onEggClose);
       if (fadeOutMs > 0 && !audio.paused) {
         const startVol = audio.volume;
         const interval = 50;
